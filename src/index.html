@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Docs</title>
+
+<style>
+:root {
+  --bg:#0f172a;
+  --card:#1e293b;
+  --accent:#38bdf8;
+  --text:#e2e8f0;
+}
+
+body{
+  margin:0;
+  font-family:Segoe UI;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:260px;
+  height:100vh;
+  position:sticky;
+  top:0;
+  background:#020617;
+  padding:20px;
+}
+
+.sidebar a{
+  display:block;
+  padding:10px;
+  color:#94a3b8;
+  text-decoration:none;
+  border-radius:6px;
+}
+
+.sidebar a:hover,.active{
+  background:var(--accent);
+  color:#000;
+}
+
+.search{
+  width:100%;
+  padding:8px;
+  margin-bottom:15px;
+  border:none;
+  border-radius:6px;
+}
+
+/* CONTENT */
+.content{
+  flex:1;
+  padding:30px;
+}
+
+.section{
+  margin-bottom:50px;
+}
+
+.endpoint{
+  background:var(--card);
+  padding:15px;
+  border-radius:10px;
+  margin-top:15px;
+  cursor:pointer;
+}
+
+.details{
+  display:none;
+  margin-top:15px;
+}
+
+/* METHOD */
+.method{
+  padding:4px 8px;
+  border-radius:5px;
+  font-size:12px;
+  margin-right:10px;
+}
+
+.GET{background:#22c55e}
+.POST{background:#3b82f6}
+.PUT{background:#f59e0b}
+.DELETE{background:#ef4444}
+
+/* TABLE */
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:10px;
+}
+
+th,td{
+  border:1px solid #334155;
+  padding:8px;
+}
+
+th{
+  background:#020617;
+  color:var(--accent);
+}
+
+/* CODE */
+.code{
+  background:#020617;
+  padding:10px;
+  margin-top:10px;
+  border-radius:6px;
+  position:relative;
+}
+
+.copy{
+  position:absolute;
+  right:10px;
+  top:10px;
+  background:var(--accent);
+  border:none;
+  padding:3px 6px;
+  cursor:pointer;
+}
+
+.try{
+  margin-top:10px;
+  padding:6px 10px;
+  background:var(--accent);
+  border:none;
+  cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<input class="search" placeholder="Search..." onkeyup="searchAPI(this.value)">
+<a href="#auth">Auth</a>
+<a href="#categories">Categories</a>
+<a href="#products">Products</a>
+</div>
+
+<div class="content">
+
+<h1>🚀 E-commerce API</h1>
+<p>Base URL: http://localhost:5000</p>
+
+<!-- AUTH -->
+<div class="section" id="auth">
+<h2>🔐 Auth</h2>
+
+<div class="endpoint" onclick="toggle(this)">
+<span class="method POST">POST</span> /auth/register
+<div class="details">
+
+<h4>Body</h4>
+<table>
+<tr><th>Field</th><th>Type</th><th>Required</th></tr>
+<tr><td>name</td><td>string</td><td>✔</td></tr>
+<tr><td>email</td><td>string</td><td>✔</td></tr>
+<tr><td>password</td><td>string</td><td>✔</td></tr>
+<tr><td>role</td><td>string</td><td>✖</td></tr>
+</table>
+
+<div class="code">
+<button class="copy" onclick="copyCode(this)">Copy</button>
+<pre>{
+"name":"Rabea",
+"email":"test@test.com",
+"password":"123456",
+"role":"admin"
+}</pre>
+</div>
+
+<h4>Response</h4>
+<div class="code">
+<pre>{
+"message":"User registered successfully",
+"user":{ "_id":"id","email":"test@test.com" }
+}</pre>
+</div>
+
+<button class="try" onclick="fake()">Try Request</button>
+
+</div>
+</div>
+
+<div class="endpoint" onclick="toggle(this)">
+<span class="method POST">POST</span> /auth/login
+<div class="details">
+
+<div class="code">
+<pre>{
+"email":"test@test.com",
+"password":"123456"
+}</pre>
+</div>
+
+<div class="code">
+<pre>{
+"token":"JWT_TOKEN"
+}</pre>
+</div>
+
+</div>
+</div>
+
+<div class="endpoint" onclick="toggle(this)">
+<span class="method GET">GET</span> /auth/profile
+<div class="details">
+
+<p><b>Header:</b> Authorization: Bearer TOKEN</p>
+
+<div class="code">
+<pre>{
+"_id":"id",
+"name":"Rabea",
+"email":"test@test.com"
+}</pre>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<!-- CATEGORIES -->
+<div class="section" id="categories">
+<h2>📂 Categories</h2>
+
+<div class="endpoint" onclick="toggle(this)">
+<span class="method GET">GET</span> /categories
+</div>
+
+<div class="endpoint" onclick="toggle(this)">
+<span class="method GET">GET</span> /categories/:id
+</div>
+
+<div class="endpoint" onclick="toggle(this)">
+<span class="method POST">POST</span> /categories
+<div class="details">
+
+<p>Admin + FormData</p>
+
+<table>
+<tr><th>Field</th><th>Type</th></tr>
+<tr><td>name</td><td>string</td></tr>
+<tr><td>description</td><td>string</td></tr>
+<tr><td>image</td><td>file</td></tr>
+</table>
+
+</div>
+</div>
+
+<div class="endpoint" onclick="toggle(this)">
+<span class="method PUT">PUT</span> /categories/:id
+</div>
+
+<div class="endpoint" onclick="toggle(this)">
+<span class="method DELETE">DELETE</span> /categories/:id
+</div>
+
+</div>
+
+<!-- PRODUCTS -->
+<div class="section" id="products">
+<h2>📦 Products</h2>
+
+<div class="endpoint" onclick="toggle(this)">
+<span class="method GET">GET</span> /products
+</div>
+
+<div class="endpoint" onclick="toggle(this)">
+<span class="method GET">GET</span> /products/:id
+</div>
+
+<div class="endpoint" onclick="toggle(this)">
+<span class="method POST">POST</span> /products
+<div class="details">
+
+<p>Admin + FormData</p>
+
+<table>
+<tr><th>Field</th><th>Type</th></tr>
+<tr><td>name</td><td>string</td></tr>
+<tr><td>description</td><td>string</td></tr>
+<tr><td>price</td><td>number</td></tr>
+<tr><td>category</td><td>ObjectId</td></tr>
+<tr><td>image</td><td>file</td></tr>
+</table>
+
+</div>
+</div>
+
+<div class="endpoint" onclick="toggle(this)">
+<span class="method PUT">PUT</span> /products/:id
+</div>
+
+<div class="endpoint" onclick="toggle(this)">
+<span class="method DELETE">DELETE</span> /products/:id
+</div>
+
+</div>
+
+</div>
+
+<script>
+function toggle(el){
+  const d = el.querySelector(".details");
+  if(d){
+    d.style.display = d.style.display==="block"?"none":"block";
+  }
+}
+
+function copyCode(btn){
+  const text = btn.nextElementSibling.innerText;
+  navigator.clipboard.writeText(text);
+  btn.innerText="Copied!";
+  setTimeout(()=>btn.innerText="Copy",1000);
+}
+
+function searchAPI(val){
+  document.querySelectorAll(".endpoint").forEach(e=>{
+    e.style.display = e.innerText.toLowerCase().includes(val.toLowerCase())
+    ? "block":"none";
+  });
+}
+
+function fake(){
+  alert("✅ Request sent (mock)");
+}
+</script>
+
+</body>
+</html>
